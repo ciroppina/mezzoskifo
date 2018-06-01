@@ -1,0 +1,58 @@
+<!DOCTYPE html> <!-- http://jonmiles.github.io/bootstrap-treeview/index.html -->
+<html>
+  <head>
+    <title>NUR - Ricerca</title>
+    <link href="./css/bootstrap-3.3.4/bootstrap.css" rel="stylesheet">
+  </head>
+  
+  <body>
+<style>
+.list-group-item {
+	padding-left: 5px;
+}
+</style>
+
+  	<div class="container">
+		  
+	  <!-- per DEMO NUR -->
+	  
+      <div class="row" style="background-color :#98bed9; margin-top: 15px;">
+        <hr>
+        <h2 style="padding-left: 15px; color: darkgoldenrod;">NUR: Argomenti e Ambiti</h2>
+        <div class="col-sm-4 col-xs-12 col-lg-4 col-md-6">		
+		  <!-- per il feedback: https://stackoverflow.com/questions/18838964/add-bootstrap-glyphicon-to-input-box -->
+          <div class="form-group has-feedback">
+            <label for="input-select-node" class="sr-only">Search Tree:</label>
+			<input type="input" class="form-control" 
+				id="input-select-node" 
+				placeholder="ricerca argomento..."  value="">
+			<i class="glyphicon glyphicon-search form-control-feedback" 
+				style="color: darksalmon;"></i>
+          </div>
+          <div class="checkbox">
+            <label style="color: darkgoldenrod !important; font-weight: 800;">
+              <input type="checkbox" class="checkbox"
+				id="chk-select-multi" checked>
+				selezione multipla
+            </label>
+			<button type="button" class="btn btn-default" id="btn-expand-all"
+				style="padding: 0px 12px; color: darkgoldenrod; margin-left: 15px;"> apri tutto </button>
+			<button type="button" class="btn btn-default" id="btn-reset-all"
+				style="padding: 0px 12px; color: darkgoldenrod; margin-left: 15px;"> reset </button>
+          </div>
+		
+		  <!-- QUESTO E' IL TREE PER IL NUR -->
+          <div id="treeview-selectable" class=""></div>
+        </div>
+		
+      </div> <!-- FINE DEMO NUR -->
+	
+    <script src="./js/jquery-2.1.4/jquery.js"></script>
+  	<script src="./js/bootstrap-treeview-1.2.0/bootstrap-treeview.js"></script>
+	<script src="./js/dati-e-funzioni.js"></script>
+  	
+	<script type="text/javascript">
+	</script>
+
+  </body>
+</html>
