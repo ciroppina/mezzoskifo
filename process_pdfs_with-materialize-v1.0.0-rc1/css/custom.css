@@ -1,0 +1,173 @@
+/* Custom Styles */
+
+h1, h2, h3, h4, h5, h6 {  /* override */
+	margin: 0px;
+	padding: 0px 5px 0px 5px;
+	display: table-cell;
+}
+
+nav { /* override */
+	margin: 0px auto !important;
+	width: 100%;
+	height: 100%;
+}
+
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: lightgray;
+    opacity: 1; /* Firefox */
+}
+
+.container { /* override */
+	margin: 0px 15px !important;
+	width: 100%;
+	max-width: unset;
+	height: 100%;
+}
+
+.col { /* override */
+	margin: 10px !important;
+}
+
+.innav {
+	font-size: 2.0em;
+	color: white;
+}
+
+.inheader {
+	padding-top: 5px;
+	font-size: 0.6em;
+	color: darkgoldenrod;
+}
+
+.custom-height {
+	height: inherit;
+}
+
+.row { /* override */
+	margin-bottom: 0px;
+}
+
+html {
+    position: relative;
+    min-height: 100%;	
+    margin:0;
+    padding:0;
+    overflow:auto; <!-- HERE -->
+}
+
+footer { /* override - thanks-to: https://matthewjamestaylor.com/blog/keeping-footers-at-the-bottom-of-the-page */
+	position:absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+}
+
+.page-footer { /* override */
+	padding-top: 0px;
+	z-index: 0; /* buttons over the footer */
+}
+
+.perfexia {
+	padding: 5px;
+}
+
+blockquote { /* override */
+	border-left: solid #ef9004;
+	margin-top: 15px;
+}
+
+.upload {
+	padding: 0.0rem !important;
+}
+
+#draghere {
+  width: auto;
+  height: 100px;
+  background-color: rgba(221,214,155,0.4);
+  border: 1px dashed black;
+  text-align: center;
+}
+
+#binaryContent {
+	height: 400px;
+	background-color: grey; 
+	color: white; 
+	margin-bottom: 60px;
+	resize: both;
+	overflow: hidden;
+	display: none;
+}
+
+#editor {
+	min-height: 400px;
+	max-height: 300px; 
+	background-color: gray; 
+	color: white; 
+	margin-bottom: 60px;
+	resize: both;
+	overflow: hidden;
+	display: none;
+}
+
+#oggetto, #titolo, #dataDoc, #note {
+	height: 47px;
+	max-height: 300px; 
+	background-color: white; /* antiquewhite */
+	color: #ef9004;
+	resize: both;
+	overflow: hidden;
+}
+
+label { /* override */
+	font-size: 1.1em;
+}
+
+.right-col {
+	margin-left: 15px !important;
+	margin-bottom: 60px;
+}
+
+.col .row { /* override */
+	margin-left: unset;
+	margin-right: unset;
+}
+
+.col .row { /* override */
+	padding: unset;
+}
+
+input[type="submit"], input[type="reset"],
+.modal-trigger {
+	color: beige;
+}
+
+.modal, #modale {
+	min-width: 85%;
+	min-height: 85%;
+	margin-top: -60px;
+	margin-bottom: -60px;
+}
+
+#modalCollect {
+	height: 300px;
+	background-color: white; 
+	margin-bottom: 25px;
+	resize: both;
+	overflow: hidden;
+	display: block;
+}
+
+#modalContent {
+	height: 160px;
+	background-color: white; 
+	margin-bottom: 25px;
+	resize: both;
+	overflow: hidden;
+	display: block;
+}
+
+a.waves-effect { /* override */
+	display: inline-flex;
+	margin-right: 15px !important;
+	letter-spacing: 1px !important;
+}

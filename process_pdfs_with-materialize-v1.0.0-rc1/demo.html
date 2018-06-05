@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!--Import Google Icon Font-->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <!--Import materialize.css-->
+  <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen"/> <!-- deprecated: ,projection -->
+  <!--Import glyphicons.css-->
+  <link type="text/css" rel="stylesheet" href="css/glyphicons.css"  media="screen"/> <!-- deprecated: ,projection -->
+  <!--Import custom.css-->
+  <link type="text/css" rel="stylesheet" href="css/custom.css"  media="screen"/> <!-- deprecated: ,projection -->
+
+  <meta charset="UTF-8">
+  <!--Let browser know website is optimized for mobile-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  
+  <title>materialize.css DEMO page</title>
+</head>
+
+<body>
+	<header>
+		<div class="page-header logo" style="margin:0px; background-color:#002742;">
+			<span class="logo-img logo-both logo-dark">
+				<img src="img/logo2.png" alt="LAZIOcrea" data-at2x="http://www.laziocrea.it/laziocrea/wp-content/uploads/TESTATA-SITO-LAZIOCREA.png">
+			</span>
+		</div>		
+	</header>   
+
+	<!-- REMOVED: 
+	<nav class="light-blue lighten-4 custom-height" role="navigation">
+		<div class="row">
+			<div class="col s4 m4 l4">
+				<h4>
+					<span class="inheader">(</span>
+					<span class="glyphicon glyphicon-eye-open inheader"></span>
+					<span class="inheader">)</span>
+					<span class="glyphicon glyphicon-eye-open inheader"></span>
+					<span class="inheader">)</span>
+				</h4>
+			</div>
+			<div class="col s4 m4 l4">
+				<h4 class="z-depth-3 innav"> materialize.css DEMO page </h4>
+			</div>
+			<div class="col s4 m4 l4"></div>
+		</div>
+	</nav>
+	-->
+
+	<!-- THE CONTENT -->
+	<div class="container"> <div class="row"> <!-- MAIN ROW -->
+	
+	<div class="col s12 m7 l7 x7"> <!-- start-left-col -->
+		
+		<div class="row">
+			<blockquote class=""> Upload a new document (textual and .pdf <em>only</em> )
+			</blockquote>
+		</div>
+		
+		<div class="row">
+			<div class="file-field input-field upload">
+				<form action="#/upload" method="post" enctype="multipart/form-data" id="uploadForm" >
+					<div id="draghere" >
+						<div class="btn">
+							<span>select a file</span>
+							<input type="file" name="files[]" id="aFile" onchange="startRead()"> <!-- multiple -->
+						</div>
+						<div class="file-path-wrapper">
+							<input class="file-path validate" type="text">
+						</div>
+						<span>or drag Ur document here</span>
+					</div>
+				</form>
+			</div>
+		</div>
+		
+		<!-- VISUALIZER AREAS -->
+		<div class="row">
+			<textarea id="editor" class="materialize-textarea" 
+				placeholder="qui viene visualizzato il testo uploaded"
+			></textarea>
+		</div>
+		
+		<div class="row">
+			<div id="binaryContent" class="">
+				<span style="color: lightgray; padding:15px;">il documento PDF si sta caricando...</span>
+			</div>
+		</div> <!-- END VISUALIZER AREAS -->
+		</div> <!-- end-left-col -->
+
+
+
+		<div class="col s12 m4 l4 x4 right-col"> <!-- start-right-col -->
+
+		<div class="row">
+			<blockquote class=""> fill fields and index all to <em>SOLR7</em>
+			</blockquote>
+		</div>
+
+		<!-- Form starts here ! method="post" action="#/index" -->
+		<form id="indexForm">
+			<div class="row">
+				<div class="input-field row">
+					<label for="titolo" id="titoloLabel" class="">* Titolo o Nome del Documento:</label>
+					<textarea class="materialize-textarea" id="titolo"></textarea>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="input-field row">
+					<label for="oggetto" id="oggettoLabel" class="">Oggetto:</label>
+					<textarea class="materialize-textarea" id="oggetto"></textarea>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="input-field row">
+					<label for="dataDoc" id="dataLabel" class="">Data del documento:</label>
+					<input type="text" class="text" id="dataDoc"></input>
+				</div>
+			</div>
+			
+			<div class="row">
+				<div class="input-field row">
+					<label for="note"  id="noteLabel" class="">Note:</label>
+					<textarea class="materialize-textarea" id="note"></textarea>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="input-field row">
+					<label for="fonte" id="fonteLabel" class="">Fonte:</label>
+					<input type="text" class="text" id="fonte"></input>
+				</div>
+			</div>
+
+			<!-- buttons -->
+			<div class="row">
+				<div class="input-field col">
+					<input type="reset" class="waves-effect waves-light btn red" id="reset" ></input>
+				</div>
+				<div class="input-field col">
+					<a class=" modal-trigger" href="#modale">
+						<button id="submit" 
+							class="waves-effect waves-light btn"
+							onclick="javascript:submitted( document.getElementById('aFile').files[0].name );" 
+						>Indicizza</button>
+					</a>
+					<!-- Modal Structure -->
+					<div id="modale" class="modal">
+						<div class="modal-content">
+						  <h5>RIEPILOGO:</h5>
+						  <textarea id="modalCollect" placeholder="riepilogo"></textarea>
+						  <h5>TESTO DA INDICIZZARE:</h5>
+						  <textarea id="modalContent" placeholder="testo estratto"></textarea>
+						</div>
+						<div class="modal-footer">
+						  <a href="#!" class="modal-close waves-effect waves-green btn invia">
+							salva in indice -<i class="material-icons send">send</i> </a>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+		</form>
+			
+		</div> <!-- end-right-col -->
+		
+	</div> <!-- END-MAIN-ROW --> </div> <!-- END CONTAINER -->
+
+	<footer class="page-footer " style="background-color:#0087B2;">
+		<div class="footer-copyright">
+			<div class="container">
+				Materialized by <a class="white-text text-lighten-3 perfexia z-depth-5" 
+				href="http://perfexia.it">Perfexia Srl</a>
+			</div>
+		</div>
+	</footer>
+
+	<!-- JavaScript(s) at end of body for optimized loading -->
+	<!-- REMOVED: <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script> -->
+	<script type="text/javascript" src="js/materialize.min.js"></script>
+	<!-- thanks-to: http://www.jacklmoore.com/autosize/ -->
+	<script type="text/javascript" src="js/autosize.min.js"></script>
+	<!-- pdf.js -->
+	<script type="text/javascript" src="js/lib/pdfjs/pdf.js"></script>
+	<!-- THESE MUST BE THE LAST LOADED SCRIPTS !!! -->
+	<script type="text/javascript" src="js/demo_eventHanders.js"></script>
+  
+</body>
+</html>
