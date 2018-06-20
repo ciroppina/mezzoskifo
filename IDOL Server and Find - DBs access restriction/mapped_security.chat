@@ -1,0 +1,17 @@
+#############################################
+## CHATs from HPE Idol Find project
+## on github
+#############################################
+
+Currently, if you enable mapped security, you can prevent documents from being returned from a database based on the user's database privileges. The database will be shown in the Find UI, but it'll appear to be an empty database since no documents will be returned from it.
+
+If you look at the a=grl on your content engine, is there a SecurityInfo parameter on requests being sent from Find? If not, you'll have to configure mapped security (the [Security] -related settings) in content and community; then restart Find and log in again
+
+
+Try removing/changing the 'databases' privilege from FindUser/FindBI roles, so that only your 'myDatabases' role has databases privileges?
+e.g.
+http://localhost:19030/action=RoleRemovePrivilegeFromRole&privilege=databases&roleName=FindUser
+http://localhost:19030/action=RoleRemovePrivilegeFromRole&privilege=databases&roleName=FindBI
+
+FALSE [Also, check that you've set [Role] AutoSetDatabases=FALSE in your community server's settings; otherwise it'll reset the database permissions each time community starts up.]
+FROM IDOL HELP: Set AutoSetDatabases to True to read the database list at startup, and add any new databases to the database privilege list for the default role.

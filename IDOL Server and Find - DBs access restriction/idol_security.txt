@@ -1,0 +1,101 @@
+###############################################
+# How-to activate User SecurityInfo
+# for Idol Server users
+###############################################
+
+## Configure IDOL Server ##
+Create a key-file containing the AES key, by using the 'common/autpassword.exe' utility, 
+at o.s. prompt:
+	autpassword.exe -x -tAES -oKeyFile=.\common\AESKeyFile.ky		<ENTER>
+Then in the [Security] config section, set the following param:
+[Security]
+SecurityInfoKeys=.\common\AESKeyFile.ky
+
+In the [UserSecurity] config section be sure the following param is present:
+[UserSecurity]
+DefaultSecurityType=0
+SecurityTokenLifetime=[24hours, 365days, see IDOL Help]
+
+where the 0 (number) security type refers to the n-th following param:
+0=Autonomy
+
+which, moreover, refers to the config section (case sensitive name):
+[Autonomy]
+Library=D:\Program Files\HewlettPackardEnterprise\IDOLServer-11.0.0\community\modules\user_autnsecurity
+EnableLogging=FALSE
+DocumentSecurity=TRUE
+// THIS field can be used in 'UserRead' action, 
+// as the param: SecurityAutonomyUsername=[current username]
+SecurityFieldCSVs=username
+
+NOTICE: restart IDOL Server after saving all modifications to the config file
+
+## GET a User Security token ##
+http://localhost:19000/a=UserRead&UserName=sascuser&Function=AUTHENTICATE&DeferLogin=false&Password=sascuser&Repository=Autonomy&SecurityAutonomyUsername=sascuser&SecurityInfo=true&SecurityFields=true&UserFieldMatch=*&RoleList=true&Privilege=*
+
+PARAMS:
+action=UserRead
+UserName=sascuser
+Function=AUTHENTICATE	/* default */
+DeferLogin=false	/* when Autonomy is the Auth reposistory, don't need to Defer to other systems */ 
+Password=sascuser		
+Repository=Autonomy	/* the type of Auth Repository for authnetication */
+SecurityAutonomyUsername=sascuser  /* creates the security Username field, for the current user */
+SecurityInfo=true
+SecurityFields=true	/* lists all security fields, for the current user */
+UserFieldMatch=*	/* lists all fileds details, for the current user */
+RoleList=true		/* lists all roles current user belongs to */
+Privilege=*			/* lista all privilegs, for the current user */
+
+SHORT-FORM:
+http://localhost:19000/a=UserRead&UserName=sascuser&Password=sascuser&SecurityInfo=true
+
+NOTES: 'SecurityInfo=true' param only works WHEN target Auth Repository has:
+- DocumentSecurity=TRUE
+- SecurityFieldCSVs=username
+in IDOL Server config file, UserSecurity related section
+
+ANSWER:
+the ResponseData from both the above action SHOULD contain a XML tag, like the following:
+<autn:securityinfo>MzM2fLPwqYm/Fezrs3RU6yeHtbHwHsWXUO+hI+zHh25OOEhXQ8Vo46v8+Cw41Ncj4jCrS1CdJExIX575WlNEvCSR+qu9WMZjDEqJTcmtSDjcHtZI7EObYQV3Ol8eE80GfErmNnNBfmYI6zec6uz+FoSEXwX3+8BN/r2tCXQ3B1xdgsYKcAyuIWuai22iOK+QrgKcWkrbAgDjEdV1jD4O9QWGiNwS5s0ruCI9bqus0Tj9XmPTlMPopKK6n/dn35is8ucSxSjNE0ujGZrN/Iz56autQOHKzR7sfoPXISdwUIv26aZLDdzTkKl2zPZjAcci8HyAvZdS+XcIZLioYkWS4ntoUvEEX88vD1fvC/RZ4Sg2dXptuKc0UXCpBBWrAQaqx1F/0yfaBIXqQFQRiuby7/Fk8wiv0mcM6VDfB4uQJABuBvWF2gcYMXD5Sio3KzPdfeBXFQ==</autn:securityinfo>
+
+If that tag is not included in the returned <responsedata> tag, it means that User Security 
+has not correctly been set
+
+###############################################
+# How-to restrict User Databases access
+# in Idol Server and Idol Find
+###############################################
+
+a) REMOVE 'databases' privilege from groups 'FindUser' amd 'FindBI' (case sensitive names)
+ie:	- http://localhost:19030/action=RoleRemovePrivilegeFromRole&privilege=databases&roleName=FindUser
+	- http://localhost:19030/action=RoleRemovePrivilegeFromRole&privilege=databases&roleName=FindBI
+
+NOTICE: 'databases' privilege is the default privilege for every newly created Role
+
+b) CREATE e new Role of Your own, ie:
+	- http://localhost:19000/a=RoleAdd&RoleName=RacisUsers	[via proxy port 19000]
+	- http://localhost:19030/a=RoleAdd&RoleName=RacisUsers	[via community port 19030]
+	
+c) ADD the 'databases' privilege to the new Role, specifing a MultiValue type:
+	- http://localhost:19030/a=RoleAddPrivilege&Privilege=databases&SingleValue=FALSE	[MultiValue privilege]
+
+d) ADD a LIST of Values to the 'databases' privilege for new Role, ie:
+	- http://localhost:19030/a=RoleSetPrivilegeForRole&Privilege=databases&RoleName=RacisUsers&Value=Archive,Racis_RSS,Racis_News,Racis_ALFRESCO
+
+NOTICE: the 'Value=' parameter accepts a c,s, list of Idol Databases names; with this configuration, the 'databases' privilege
+is "RESTRICTED" to the listed databases; it means that all users in Role 'RacisUsers' have access ONLY to those databases
+[listed with the 'Value' param]
+NOTICE: OF-COURSE, if You add users to other Roles, which have a wider list in their 'databases' privilege, this "RESTRICTION" fails
+
+e) IMPORTANT: it's not necessary to modify Idol Server (proxy or community) Configuration by setting:
+	[Role]
+	AutoSetDatabases=FALSE 
+
+You can leave it to TRUE (the default setting). In effect, Documentation reports that: 
+[Set AutoSetDatabases to TRUE to read the database list at startup, and add any new databases to the 'databases' 
+privilege list for the default role (everyone)]
+But You are using the new Role 'RacisUsers', not the default 'everyone'; if You detect problems: as 'databases'
+privilege updating when You add a new Database to Idol Server, and restart the Server, then
+You can REMOVE Your users from the 'everyone' Role, ie:
+	- http://localhost:19030/a=RoleRemoveUserFromRole&RoleName=everyone&UserName=sascuser
